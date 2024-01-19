@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Gerador de Link</title>
+</head>
+
+<body>
+
+    <br><br>
+
+    <h1 class="h1">Gerador de link de Whatsapp</h1>
+    <br>
+    <h3 class="h3">Preencha os campos abaixo e obtenha seu link personalizado para compartilhar seu WhatsApp:</h3>
+    <br><br>
+    <input type="number" data-mask="(00) 0000-0000" data-mask-selectonfocus="true" id="telefone"
+        placeholder="Número do Whatsapp">
+    <br><br>
+    <input type="text" id="message" class="tela tela_senha" placeholder="Texto que deseja na mensagem">
+    <br><br>
+
+    <div id="botoes">
+        <input type="button" class="botao_de_login" value="Gerar Link" onclick="gerarlink()">
+        <br><br>
+        
+        <br>
+
+        <input type="button" class="botao_de_login" value="Copiar Código" onclick="copiarCodigo()">
+        
+        <br>
+        <br><br><br>
+    </div>
+
+    <div id="resposta">
+    </div>
+
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+
+    function copiarCodigo() {
+        var elemento = document.getElementById('resposta');
+        var textoArea = document.createElement('textarea');
+        textoArea.value = elemento.textContent;
+        document.body.appendChild(textoArea);
+        textoArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textoArea);
+
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Código copiado com sucesso!!!",
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
+
+
+    $(document).ready(function () {
+        $('#telefone').mask('(00) 0000-0000#');
+    });
+
+    function gerarlink() {
+        var numeroTelefone = document.getElementById('telefone').value;
+        var mensagem = document.getElementById('message').value;
+
+        if (numeroTelefone.trim() === '') {
+            Swal.fire({
+                icon: "error",
+                title: "Não consigo gerar o link",
+                text: "Complete o campo Whatsapp",
+                /* footer: '<a href="#"></a>' */
+            });
+
+        } else {
+
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Link foi gerado!!!",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            var linkWhatsApp = 'https://api.whatsapp.com/send?phone=' + encodeURIComponent(numeroTelefone) + '&text=' + encodeURIComponent(mensagem);
+            var minhadiv = document.getElementById('resposta');
+            minhadiv.innerHTML = linkWhatsApp;
+        }
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
